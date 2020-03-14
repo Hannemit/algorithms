@@ -13,6 +13,9 @@ __pycache__/
 *.out
 *.gz
 
+# pycharm
+.idea/
+
 # Distribution / packaging
 .Python
 build/
