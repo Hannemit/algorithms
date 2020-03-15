@@ -7,4 +7,8 @@ setup(
     description='A collection of algorithms',
     author='Hanne',
     license='MIT',
+    install_requires=[
+        'numpy>=1.17.4',
+        'pytest'
+    ]
 )
