@@ -9,6 +9,7 @@ setup(
     license='MIT',
     install_requires=[
         'numpy>=1.17.4',
-        'pytest'
+        'pytest',
+        'pre-commit'
     ]
 )
