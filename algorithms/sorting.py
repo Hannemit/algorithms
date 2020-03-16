@@ -151,8 +151,12 @@ def insertion_sort(input_list):
     return input_list
 
 
-def merge_sort():
-    print("hello")
+def merge_sort(input_list):
+    """
+    Perform merge sort
+    :param input_list:
+    :return:
+    """
     pass
 
 
