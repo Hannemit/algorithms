@@ -41,7 +41,7 @@ def selection_sort(input_list: list, ascending: bool = True) -> list:
     :param ascending: boolean, whether to sort ascending or descending
     :return: list, sorted.
     """
-    sorted_list = [0]*len(input_list)
+    sorted_list = [0] * len(input_list)
 
     for ii, value in enumerate(input_list.copy()):
         if ascending:
@@ -145,7 +145,7 @@ def insertion_sort(input_list):
         value = input_list[ii]
         j = ii - 1
         while value < input_list[j] and j >= 0:
-            input_list[j+1] = input_list[j]
+            input_list[j + 1] = input_list[j]
             j -= 1
         input_list[j + 1] = value
     return input_list
@@ -157,7 +157,8 @@ def merge_sort(input_list):
     :param input_list:
     :return:
     """
-    pass
+    if len(input_list) < 2:
+        return input_list
 
 
 ###################################
