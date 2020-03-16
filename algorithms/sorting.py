@@ -152,6 +152,7 @@ def insertion_sort(input_list):
 
 
 def merge_sort():
+    print("hello")
     pass
 
 
