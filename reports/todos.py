@@ -6,7 +6,8 @@ TODO: go on hackerrank, do at least 5 exercises, from now on do at least 3 every
 TODO: More sorting! the link below has (both of them actually) other sorting algorithms mentioned (Thursday)
 TODO: Friday continue the sorting!!
 
-TODO: Weekend --> Redo all sorting algorithms, write down their time and space complexities.
+TODO: Weekend --> Redo all sorting algorithms, write down their time and space complexities, also write down advantages
+    and disadvantages of the methods.
 
 
 Useful sites:
