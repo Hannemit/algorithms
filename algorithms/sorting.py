@@ -54,9 +54,7 @@ def selection_sort(input_list: list, ascending: bool = True) -> list:
 
 
 def pick_pivot(arr, method: str):
-    if method == "first":
-        return arr[0]
-    elif method == "random":
+    if method == "random":
         return np.random.choice(arr)
     elif method == "med3":
         vals = np.random.choice(arr, size=3, replace=False)
@@ -64,6 +62,8 @@ def pick_pivot(arr, method: str):
     elif method == "med5":
         vals = np.random.choice(arr, size=5, replace=False)
         return np.median(vals)
+    else:
+        return arr[0]
 
 
 def partition_using_pivot(input_list, pivot):
@@ -77,7 +77,7 @@ def partition_using_pivot(input_list, pivot):
     return less_than, greater_than
 
 
-def quick_sort(in_list, method="first"):
+def quick_sort(in_list, method="random"):
 
     if len(in_list) < 2:
         return in_list
