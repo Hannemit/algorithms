@@ -51,3 +51,12 @@ def quicksort(input_list: list) -> list:
     less_than_pivot, more_than_pivot = get_both_sides(input_list, pivot)
 
     return quicksort(less_than_pivot) + [pivot] + quicksort(more_than_pivot)
+
+
+def all_chars_unique(string: str):
+    chars = set()
+    for char in string:
+        if char in chars:
+            return False
+        chars.add(char)
+    return True
