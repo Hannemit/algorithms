@@ -6,9 +6,12 @@ test_data = [
     ([3, 6, 8, 6, 4, 5, 6, 8, 5, 2, 1], [1, 2, 3, 4, 5, 5, 6, 6, 6, 8, 8]),
     ([], []),
     ([3], [3]),
-    ([-4.1456, -39, -4.1454, 9.76, 3.2, 0, -1, 0, -2.0], [-39, -4.1456, -4.1454, -2, -1, 0, 0, 3.2, 9.76]),
+    (
+        [-4.1456, -39, -4.1454, 9.76, 3.2, 0, -1, 0, -2.0],
+        [-39, -4.1456, -4.1454, -2, -1, 0, 0, 3.2, 9.76],
+    ),
     ([1, 1, 1, 2, 2, 2, 3, 3, 4, 5], [1, 1, 1, 2, 2, 2, 3, 3, 4, 5]),
-    ([-1, -2, -1, -2, -4, 5, 3, 9, -4, 2], [-4, -4, -2, -2, -1, -1, 2, 3, 5, 9])
+    ([-1, -2, -1, -2, -4, 5, 3, 9, -4, 2], [-4, -4, -2, -2, -1, -1, 2, 3, 5, 9]),
 ]
 
 
@@ -42,3 +45,10 @@ def test_bubblesort(test_input, expected):
 def test_insertionsort(test_input, expected):
     out = sorting.insertion_sort(test_input.copy())
     np.testing.assert_allclose(expected, out)
+
+
+@pytest.mark.parametrize("test_input, expected", test_data)
+def test_mergesort(test_input, expected):
+    copy_in = test_input.copy()
+    sorting.merge_sort(copy_in, 0, len(copy_in) - 1)
+    np.testing.assert_allclose(expected, copy_in)
