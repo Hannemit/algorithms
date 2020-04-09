@@ -1,4 +1,5 @@
 import numpy as np
+from typing import List
 
 
 def swap_min_max(arr: np.ndarray):
@@ -60,3 +61,67 @@ def all_chars_unique(string: str):
             return False
         chars.add(char)
     return True
+
+
+def find_max(input_list: List[int], high=True) -> (int, int):
+    """
+    Find max of a list and its index. If multiple maxes, just either the one with lowest or highest index, depending
+    on 'high'
+    :param input_list: list, our input list
+    :param high: boolean, if True then if multiple max values return the highest index one, otherwise return
+            the lowest index one
+    :return: (max_val, idx_max_val), the max value and its index
+    """
+    if not input_list:
+        raise ValueError("Provide valid list.., not empty one")
+
+    max_val = input_list[0]
+    max_idx = 0
+    for ii, value in enumerate(input_list[1:]):
+        if high:
+            if value >= max_val:
+                max_val = value
+                max_idx = ii + 1
+        else:
+            if value > max_val:
+                max_val = value
+                max_idx = ii + 1
+    return max_val, max_idx
+
+
+def calculate_water_volume(heights: List[int]) -> int:
+    total_num = len(heights)
+    i = 1
+    max_val_list = [0] * total_num
+
+    # fill in max values from left to right
+    while i + 1 < total_num:
+        max_val, max_idx = find_max(heights[i + 1:], high=True)
+        for j in range(i, max_idx + i + 1):
+            max_val_list[j] = max_val
+        i = max_idx + i + 1
+
+    # fill in max values from right to left --> pick min of maxes
+    i = total_num - 2
+    while i > 0:
+        max_val, max_idx = find_max(heights[:i], high=False)
+
+        for j in range(max_idx + 1, i + 1):
+            max_val_list[j] = min(max_val_list[j], max_val)
+        i = max_idx
+
+    # calculate water height
+    total_sum = 0
+    for i in range(len(heights)):
+        diff = max_val_list[i] - heights[i]
+        if diff > 0:
+            total_sum += diff
+
+    return total_sum
+
+
+if __name__ == "__main__":
+
+    input_height = [1, 3, 2, 4, 1, 3, 1, 4, 5, 2, 2, 1, 4, 2, 2]
+    result = calculate_water_volume(input_height)
+    print(result)

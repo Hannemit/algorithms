@@ -19,6 +19,22 @@ test_data2 = [
 ]
 
 
+test_data_3 = [
+    ([1, 3, 2, 4, 1, 3, 1, 4, 5, 2, 2, 1, 4, 2, 2], 15),
+    ([2, 2, 2, 2], 0),
+    ([1, 2, 3, 4, 5], 0),
+    ([5, 4, 3, 2], 0),
+    ([1], 0),
+    ([1, 4], 0),
+    ([], 0),
+    ([5, 4, 3, 2, 3, 4, 7], 9),
+    ([2, 3, 4, 5, 4, 3, 2], 0),
+    ([5, 1, 1, 1, 5], 12),
+    ([5, 0, 0, 4, 3, 5], 13),
+    ([2, 3, 4, 3, 3, 2, 4], 4),
+]
+
+
 @pytest.mark.parametrize("input_number, expected", test_data)
 def test_factorial(input_number, expected):
     out = misc.factorial(input_number)
@@ -37,3 +53,9 @@ def test_quicksort(test_input, expected):
     np.testing.assert_allclose(expected, out)
     np.testing.assert_allclose(expected, out2)
     np.testing.assert_allclose(expected, out3)
+
+
+@pytest.mark.parametrize("test_input, expected", test_data_3)
+def test_calculate_water_volume(test_input, expected):
+    out = misc.calculate_water_volume(test_input.copy())
+    np.testing.assert_equal(out, expected)
