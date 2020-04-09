@@ -93,6 +93,7 @@ def quick_sort(in_list: list, method: str = "random"):
 
 def bubble_sort(input_list: list) -> list:
     """
+    TODO: make inplace
     In practice, very slow algorithm. Both average and worst-case are O(n^2). The only good thing about it is that if
     the input list was already sorted, it runs in O(n), as opposed to many other sorting algorithms which still take
     O(n log n) even if the array was already sorted (as they don't check for that). However, insertion sort has the
@@ -130,6 +131,7 @@ def bubble_sort(input_list: list) -> list:
 
 def insertion_sort(input_list: list) -> list:
     """
+    TODO: make in-place, no need to return list.
     Insertion sort is also O(n^2) but it is still more efficient than bubble sort or selection sort. It is not bad for
     arrays that are already close to being sorted. The running order is O(kn) if each element is no more than k places
     away from its sorted position (so if completely unsorted, then get O(n*n))
