@@ -90,33 +90,22 @@ def find_max(input_list: List[int], high=True) -> (int, int):
 
 
 def calculate_water_volume(heights: List[int]) -> int:
+    if not heights:
+        return 0
+
     total_num = len(heights)
-    i = 1
-    max_val_list = [0] * total_num
+    max_val_list = heights.copy()
 
     # fill in max values from left to right
-    while i + 1 < total_num:
-        max_val, max_idx = find_max(heights[i + 1:], high=True)
-        for j in range(i, max_idx + i + 1):
-            max_val_list[j] = max_val
-        i = max_idx + i + 1
+    for i in range(1, total_num):
+        max_val_list[i] = max(heights[i], max_val_list[i - 1])
 
-    # fill in max values from right to left --> pick min of maxes
-    i = total_num - 2
-    while i > 0:
-        max_val, max_idx = find_max(heights[:i], high=False)
-
-        for j in range(max_idx + 1, i + 1):
-            max_val_list[j] = min(max_val_list[j], max_val)
-        i = max_idx
-
-    # calculate water height
+    # and from right to left, picking min of the maxes
+    max_val_list[-1] = heights[-1]
     total_sum = 0
-    for i in range(len(heights)):
-        diff = max_val_list[i] - heights[i]
-        if diff > 0:
-            total_sum += diff
-
+    for i in range(total_num - 2, 0, -1):
+        max_val_list[i] = min(max_val_list[i], max(heights[i], max_val_list[i + 1]))
+        total_sum += max_val_list[i] - heights[i]
     return total_sum
 
 
