@@ -220,6 +220,65 @@ def merge_sort(input_list: list, left: int, right: int) -> None:
     merge(input_list, left, mid, right)
 
 
+def swap_values(input_list, idx1, idx2):
+    temp = input_list[idx1]
+    input_list[idx1] = input_list[idx2]
+    input_list[idx2] = temp
+    return input_list
+
+
+def create_heap(input_list) -> list:
+    length = len(input_list)
+
+    for ii in range(1, length):
+        parent_idx = (ii - 1) // 2
+        node_idx = ii
+        while parent_idx >= 0:
+            if input_list[node_idx] > input_list[parent_idx]:
+                input_list = swap_values(input_list, parent_idx, node_idx)
+                node_idx = parent_idx
+                parent_idx = (parent_idx - 1) // 2
+            else:
+                break
+    return input_list
+
+
+def remove_from_heap(input_list):
+    if len(input_list) <= 1:
+        return input_list
+
+    input_list[0] = input_list[-1]
+
+    max_iter = len(input_list) // 2
+    node_idx = 0
+    while node_idx < max_iter:
+        idx_child_1 = 2 * node_idx + 1
+        idx_child_2 = idx_child_1 + 1
+        if idx_child_2 > len(input_list) - 1:
+            idx_swap = idx_child_1
+        else:
+            if input_list[idx_child_1] > input_list[idx_child_2]:
+                idx_swap = idx_child_1
+            else:
+                idx_swap = idx_child_2
+        if input_list[node_idx] < input_list[idx_swap]:
+            input_list = swap_values(input_list, node_idx, idx_swap)
+            node_idx = idx_swap
+        else:
+            break
+    return input_list
+
+
+def heap_sort(input_list):
+
+    input_list = create_heap(input_list)
+    num = len(input_list)
+    for ii in range(num):
+        max_val = input_list[0]
+        input_list[: num - ii] = remove_from_heap(input_list[: num - ii])
+        input_list[num - 1 - ii] = max_val
+
+
 ###################################
 
 
@@ -235,7 +294,7 @@ def comb_sort():
     pass
 
 
-def heap_sort():
+def radix_sort():
     pass
 
 
@@ -243,5 +302,5 @@ if __name__ == "__main__":
     inputs = [-4.1456, -39, -4.1454, 9.76, 3.2, 0, -1, 0, -2.0]
     inputs2 = [3, 6, 8, 6, 4, 5, 6, 8, 5, 2, 1]
 
-    merge_sort(inputs2, 0, len(inputs2) - 1)
+    heap_sort(inputs2)
     print(inputs2)
