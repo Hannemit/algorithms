@@ -57,5 +57,5 @@ def test_mergesort(test_input, expected):
 @pytest.mark.parametrize("test_input, expected", test_data)
 def test_heapsort(test_input, expected):
     copy_in = test_input.copy()
-    sorting.heap_sort(copy_in)
-    np.testing.assert_allclose(expected, copy_in)
+    out = sorting.Heap().heap_sort(copy_in)
+    np.testing.assert_allclose(expected, out)

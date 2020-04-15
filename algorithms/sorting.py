@@ -227,56 +227,77 @@ def swap_values(input_list, idx1, idx2):
     return input_list
 
 
-def create_heap(input_list) -> list:
-    length = len(input_list)
+class Heap:
+    def __init__(self):
+        self.heap = []
+        self.heap_size = 0
 
-    for ii in range(1, length):
-        parent_idx = (ii - 1) // 2
-        node_idx = ii
-        while parent_idx >= 0:
-            if input_list[node_idx] > input_list[parent_idx]:
-                input_list = swap_values(input_list, parent_idx, node_idx)
-                node_idx = parent_idx
-                parent_idx = (parent_idx - 1) // 2
-            else:
-                break
-    return input_list
-
-
-def remove_from_heap(input_list):
-    if len(input_list) <= 1:
-        return input_list
-
-    input_list[0] = input_list[-1]
-
-    max_iter = len(input_list) // 2
-    node_idx = 0
-    while node_idx < max_iter:
-        idx_child_1 = 2 * node_idx + 1
-        idx_child_2 = idx_child_1 + 1
-        if idx_child_2 > len(input_list) - 1:
-            idx_swap = idx_child_1
-        else:
-            if input_list[idx_child_1] > input_list[idx_child_2]:
+    def _heapify(self, root_idx: int) -> None:
+        """
+        Make sure the subtree from root_idx down is a heap. We push root_idx down until it reached the correct
+        location
+        :param root_idx: int, index of root of the current subtree
+        :return: None, updates self.heap
+        """
+        max_iter = self.heap_size // 2
+        node_idx = root_idx
+        while node_idx < max_iter:
+            idx_child_1 = 2 * node_idx + 1
+            idx_child_2 = idx_child_1 + 1
+            if idx_child_2 > self.heap_size - 1:
                 idx_swap = idx_child_1
             else:
-                idx_swap = idx_child_2
-        if input_list[node_idx] < input_list[idx_swap]:
-            input_list = swap_values(input_list, node_idx, idx_swap)
-            node_idx = idx_swap
+                if self.heap[idx_child_1] > self.heap[idx_child_2]:
+                    idx_swap = idx_child_1
+                else:
+                    idx_swap = idx_child_2
+            if self.heap[node_idx] < self.heap[idx_swap]:
+                self.heap = swap_values(self.heap, node_idx, idx_swap)
+                node_idx = idx_swap
+            else:
+                break
+
+    def _pop(self):
+        """
+        Pop off the top value
+        :return: the top value of the heap
+        """
+        if self.heap_size == 0:
+            raise RuntimeError("Cannot pop from empty heap")
+
+        top_value = self.heap[0]
+        self.heap[0] = self.heap[self.heap_size - 1]
+        self.heap_size -= 1
+        self._heapify(0)
+        return top_value
+
+    def _create_heap(self, input_list: list) -> None:
+        """
+        Given some input list (or array), make a max heap out of it
+        :param input_list: inputs we want to create a max heap for
+        :return: None, updates self.heap and self.heap_size
+        """
+        mid_idx = (
+            len(input_list) // 2
+        )  # every node to the right of this (and itself) is a leaf
+        self.heap = input_list
+        self.heap_size = len(input_list)
+        for ii in range(1, mid_idx + 1):
+            self._heapify(mid_idx - ii)
+
+    def heap_sort(self, input_list: list, ascending: bool = True) -> list:
+        """
+        Sort a given input list using heap sort
+        :param input_list: list, our input list
+        :param ascending: boolean, if True sort in ascending order, otherwise descending
+        :return: list, the sorted list
+        """
+        self._create_heap(input_list)
+        descending_list = [self._pop() for _ in range(self.heap_size)]
+        if ascending:
+            return descending_list[::-1]
         else:
-            break
-    return input_list
-
-
-def heap_sort(input_list):
-
-    input_list = create_heap(input_list)
-    num = len(input_list)
-    for ii in range(num):
-        max_val = input_list[0]
-        input_list[: num - ii] = remove_from_heap(input_list[: num - ii])
-        input_list[num - 1 - ii] = max_val
+            return descending_list
 
 
 ###################################
@@ -301,6 +322,6 @@ def radix_sort():
 if __name__ == "__main__":
     inputs = [-4.1456, -39, -4.1454, 9.76, 3.2, 0, -1, 0, -2.0]
     inputs2 = [3, 6, 8, 6, 4, 5, 6, 8, 5, 2, 1]
+    inputs2 = [-1, -2, -1, -2, -4, 5, 3, 9, -4, 2]
 
-    heap_sort(inputs2)
-    print(inputs2)
+    print(Heap().heap_sort(inputs2, ascending=False))
