@@ -55,6 +55,20 @@ class LinkedList:
         new_node.next = mid_node.next
         mid_node.next = new_node
 
+    def remove_node(self, data_to_remove):
+        if self.head is None:
+            return
+
+        if self.head.data == data_to_remove:
+            self.head = self.head.next
+
+        current_node = self.head
+        while current_node.next is not None:
+            if current_node.next.data == data_to_remove:
+                current_node.next = current_node.next.next
+                return
+            current_node = current_node.next
+
 
 if __name__ == "__main__":
 
@@ -85,4 +99,17 @@ if __name__ == "__main__":
 
     print("Add wednesday evening in after wednesday")
     llist.insert_after(llist.head.next.next.next, "wed evening")
+    llist.print_list()
+
+    print("Remove tuesday")
+    llist.remove_node("Tuesday")
+    llist.print_list()
+
+    print("Remove tuesday again (should do nothing)")
+    llist.remove_node("Tuesday")
+    llist.print_list()
+
+    print("Remove Monday twice")
+    llist.remove_node("Monday")
+    llist.remove_node("Monday")
     llist.print_list()
