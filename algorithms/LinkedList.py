@@ -59,21 +59,16 @@ class LinkedList:
         """
         Insert a new node after a node with data 'mid_data'
         """
-        if self.head is None:
-            print("No data in list")
-            return
-
-        current_node = self.head.next
+        current_node = self.head
         while current_node is not None:
             if current_node.data == mid_data:
                 break
             current_node = current_node.next
 
         if current_node is None:
-            return
+            return  # node with 'mid_data' data was not found in list
 
         new_node = Node(data)
-
         if current_node.next is not None:
             new_node.next = current_node.next
         current_node.next = new_node
@@ -84,6 +79,7 @@ class LinkedList:
 
         if self.head.data == data_to_remove:
             self.head = self.head.next
+            return
 
         current_node = self.head
         while current_node.next is not None:
@@ -139,5 +135,5 @@ if __name__ == "__main__":
 
     print("Insert wed night after wed evening and thus morning after Thursday")
     llist.insert_after_data("wed evening", "wed night")
-    llist.insert_after_data("Thursday", "thus morning")
+    llist.insert_after_data("Sunday", "sun morning")
     llist.print_list()
