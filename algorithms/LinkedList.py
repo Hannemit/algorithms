@@ -40,7 +40,7 @@ class LinkedList:
         current_node.next = new_node
 
     @staticmethod
-    def insert_after(mid_node: Node, data):
+    def insert_after_node(mid_node: Node, data):
         """
         Insert the new node after 'mid_node' (some node somewhere 'in the middle' (i.e. not start or end)
         :param mid_node: Node
@@ -54,6 +54,29 @@ class LinkedList:
         new_node = Node(data)
         new_node.next = mid_node.next
         mid_node.next = new_node
+
+    def insert_after_data(self, mid_data, data):
+        """
+        Insert a new node after a node with data 'mid_data'
+        """
+        if self.head is None:
+            print("No data in list")
+            return
+
+        current_node = self.head.next
+        while current_node is not None:
+            if current_node.data == mid_data:
+                break
+            current_node = current_node.next
+
+        if current_node is None:
+            return
+
+        new_node = Node(data)
+
+        if current_node.next is not None:
+            new_node.next = current_node.next
+        current_node.next = new_node
 
     def remove_node(self, data_to_remove):
         if self.head is None:
@@ -98,7 +121,7 @@ if __name__ == "__main__":
     llist.print_list()
 
     print("Add wednesday evening in after wednesday")
-    llist.insert_after(llist.head.next.next.next, "wed evening")
+    llist.insert_after_node(llist.head.next.next.next, "wed evening")
     llist.print_list()
 
     print("Remove tuesday")
@@ -112,4 +135,9 @@ if __name__ == "__main__":
     print("Remove Monday twice")
     llist.remove_node("Monday")
     llist.remove_node("Monday")
+    llist.print_list()
+
+    print("Insert wed night after wed evening and thus morning after Thursday")
+    llist.insert_after_data("wed evening", "wed night")
+    llist.insert_after_data("Thursday", "thus morning")
     llist.print_list()
