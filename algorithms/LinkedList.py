@@ -23,6 +23,14 @@ class LinkedList:
             print(printvalue.data)
             printvalue = printvalue.next
 
+    def return_list(self) -> list:
+        value = self.head
+        all_vals = []
+        while value is not None:
+            all_vals.append(value.data)
+            value = value.next
+        return all_vals
+
     def insert_at_start(self, data):
         new_node = Node(data)
         new_node.next = self.head
