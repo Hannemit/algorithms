@@ -11,11 +11,20 @@ class Node:
 
 class LinkedList:
     """
-    The linked list is just a chain of nodes, with a head node at the start.
+    Just a chain of nodes, with a head node at the start.
     """
 
     def __init__(self):
         self.head = None
+
+    def create_list(self, in_array):
+        for ii, value in enumerate(in_array):
+            new_node = Node(value)
+            if ii == 0:
+                self.head = new_node
+            else:
+                prev_node.next = new_node
+            prev_node = new_node
 
     def print_list(self):
         printvalue = self.head
@@ -96,24 +105,24 @@ class LinkedList:
                 return
             current_node = current_node.next
 
+    def bub_sort(self):
+        end = None
+        while end is not self.head:
+            start = self.head
+            while start.next is not end:
+                nextnode = start.next
+                if nextnode.data < start.data:
+                    start.data, nextnode.data = nextnode.data, start.data
+                start = start.next
+            end = start
+
 
 if __name__ == "__main__":
 
     llist = LinkedList()
-    tue = Node("Tuesday")
-    wed = Node("Wednesday")
-    thu = Node("Thursday")
-    fri = Node("Friday")
-    sat = Node("Saturday")
-
-    llist.head = Node("Monday")
-    llist.head.next = tue
-    tue.next = wed
-    wed.next = thu
-    thu.next = fri
-    fri.next = sat
-    sat.next = Node("Sunday")
-
+    llist.create_list(
+        ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    )
     llist.print_list()
 
     print("Add sunday at start")
@@ -144,4 +153,10 @@ if __name__ == "__main__":
     print("Insert wed night after wed evening and thus morning after Thursday")
     llist.insert_after_data("wed evening", "wed night")
     llist.insert_after_data("Sunday", "sun morning")
+    llist.print_list()
+
+    print("Creating new list and sorting..")
+    input_arr = [6, 3, 5, 1, 8, 6, 3, 5, 9, 2, 4, 3, 1, 8, 4, 7, 2]
+    llist.create_list(input_arr)
+    llist.bub_sort()
     llist.print_list()
