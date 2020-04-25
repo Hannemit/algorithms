@@ -128,36 +128,38 @@ class LinkedList:
         if head2 is None:
             return head1
 
-        current1 = head1
-        current2 = head2
-        if current1.data < current2.data:
-            merged_head = current1
-            current1 = current1.next
+        new_head = Node()
+        if head1.data < head2.data:
+            new_head.data = head1.data
+            head1 = head1.next
         else:
-            merged_head = current2
-            current2 = current2.next
+            new_head.data = head2.data
+            head2 = head2.next
 
-        merged = merged_head
-        while current1 is not None and current2 is not None:
-            if current1.data < current2.data:
-                merged.next = current1
-                current1 = current1.next
+        merged = new_head
+        while head1 is not None and head2 is not None:
+            if head1.data < head2.data:
+                new_node = Node(head1.data)
+                merged.next = new_node
+                head1 = head1.next
             else:
-                merged.next = current2
-                current2 = current2.next
+                new_node = Node(head2.data)
+                merged.next = new_node
+                head2 = head2.next
             merged = merged.next
 
-        while current1 is not None:
-            merged.next = current1
-            current1 = current1.next
+        while head1 is not None:
+            new_node = Node(head1.data)
+            merged.next = new_node
             merged = merged.next
 
-        while current2 is not None:
-            merged.next = current2
-            current2 = current2.next
+        while head2 is not None:
+            new_node = Node(head2.data)
+            merged.next = new_node
+            head2 = head2.next
             merged = merged.next
 
-        return merged_head
+        return new_head
 
 
 if __name__ == "__main__":
@@ -207,8 +209,8 @@ if __name__ == "__main__":
     print("Merging sorted list with other sorted list")
     llist2 = LinkedList()
     llist2.create_list([-4, -2, 0, 0, 1, 2, 5, 9, 12])
-    merged_list = llist.merge(llist2)
-    merged_list.print_list()
+    lmerged = llist.merge(llist2)
+    lmerged.print_list()
 
     print("original ones")
     llist2.print_list()
