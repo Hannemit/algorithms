@@ -116,6 +116,49 @@ class LinkedList:
                 start = start.next
             end = start
 
+    def merge(self, list2):
+        merged_list = LinkedList()
+        merged_list.head = self._merge_list(self.head, list2.head)
+        return merged_list
+
+    @staticmethod
+    def _merge_list(head1, head2):
+        if head1 is None:
+            return head2
+        if head2 is None:
+            return head1
+
+        current1 = head1
+        current2 = head2
+        if current1.data < current2.data:
+            merged_head = current1
+            current1 = current1.next
+        else:
+            merged_head = current2
+            current2 = current2.next
+
+        merged = merged_head
+        while current1 is not None and current2 is not None:
+            if current1.data < current2.data:
+                merged.next = current1
+                current1 = current1.next
+            else:
+                merged.next = current2
+                current2 = current2.next
+            merged = merged.next
+
+        while current1 is not None:
+            merged.next = current1
+            current1 = current1.next
+            merged = merged.next
+
+        while current2 is not None:
+            merged.next = current2
+            current2 = current2.next
+            merged = merged.next
+
+        return merged_head
+
 
 if __name__ == "__main__":
 
@@ -159,4 +202,16 @@ if __name__ == "__main__":
     input_arr = [6, 3, 5, 1, 8, 6, 3, 5, 9, 2, 4, 3, 1, 8, 4, 7, 2]
     llist.create_list(input_arr)
     llist.bub_sort()
+    llist.print_list()
+
+    print("Merging sorted list with other sorted list")
+    llist2 = LinkedList()
+    llist2.create_list([-4, -2, 0, 0, 1, 2, 5, 9, 12])
+    merged_list = llist.merge(llist2)
+    merged_list.print_list()
+
+    print("original ones")
+    llist2.print_list()
+
+    print("bla")
     llist.print_list()
