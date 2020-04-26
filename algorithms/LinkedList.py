@@ -161,6 +161,23 @@ class LinkedList:
 
         return new_head
 
+    def get_middle_node(self):
+        """
+        If have even number of nodes, return later of the two middle values (e.g. if 6 nodes, return node 4),
+        if odd just return the middle node.
+        :return:
+        """
+        if self.head is None:
+            return None
+
+        fast = self.head
+        slow = self.head
+
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+
 
 if __name__ == "__main__":
 
@@ -212,8 +229,7 @@ if __name__ == "__main__":
     lmerged = llist.merge(llist2)
     lmerged.print_list()
 
-    print("original ones")
-    llist2.print_list()
-
-    print("bla")
-    llist.print_list()
+    print("middle node")
+    mid_node = llist2.get_middle_node()
+    print(mid_node.data)
+    print(llist.get_middle_node().data)
