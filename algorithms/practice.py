@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import Union
+from typing import Optional
 
 
 class Node:
@@ -32,7 +32,7 @@ class List:
             curr_node = curr_node.next
 
 
-def compare_strings(head1: Union[None, Node], head2: Union[None, Node]) -> int:
+def compare_strings(head1: Optional[Node], head2: Optional[Node]) -> int:
     """
     Given two linked lists encoding strings, e.g. ['h', 'e', 'l', 'l', 'o'], return 0 if the lists are identical, and
     otherwise return 1 if the first list comes first alphabetically, -1 if the second list comes first.
@@ -58,7 +58,7 @@ def compare_strings(head1: Union[None, Node], head2: Union[None, Node]) -> int:
     return 0
 
 
-def reverse_list(head: Union[None, Node]) -> Union[None, Node]:
+def reverse_list(head: Optional[Node]) -> Optional[Node]:
 
     prev = None
     current = head
@@ -71,7 +71,7 @@ def reverse_list(head: Union[None, Node]) -> Union[None, Node]:
     return prev
 
 
-def sample_random_node(head: Union[None, Node]):
+def sample_random_node(head: Optional[Node]):
     """
     Given a linked list, return a node (i.e. its data) at random. Each node should be equally likely to be returned
     :param head: head of input linked list, None or Node
@@ -89,6 +89,73 @@ def sample_random_node(head: Union[None, Node]):
         i += 1
         head = head.next
     return return_node.data
+
+
+def get_kth_from_end(head: Optional[Node], k: int):
+    if head is None:
+        return None
+
+    # start one pointer k steps ahead
+    steps_ahead = head
+    for i in range(k):
+        steps_ahead = steps_ahead.next
+        if steps_ahead is None:
+            if i == k - 1:
+                return head.data
+            else:
+                return
+
+    while steps_ahead is not None:
+        head = head.next
+        steps_ahead = steps_ahead.next
+
+    return head.data
+
+
+def find_intersection(head1, head2):
+    """
+    Given two lists that may intersect (i.e. one points to a node in the other list and from then on they follow the
+    same chain), find the intersection node.
+    :param head1: head of first linked list
+    :param head2: head of second linked list
+    :return: the intersection node (or None, if no such node)
+    """
+
+    nodes_seen = set()
+    while head1 is not None:
+        nodes_seen.add(head1)
+        head1 = head1.next
+
+    while head2 is not None:
+        if head2 in nodes_seen:
+            return head2
+        head2 = head2.next
+
+    return None
+
+
+def find_inters_two_points(head1, head2):
+    """
+    Does same as 'find_intersection' but using two pointers and being more efficient in general
+    :param head1: head of first list
+    :param head2: head of second list
+    :return: node of intersection (or None if no intersection)
+    """
+    point1 = head1
+    point2 = head2
+    while point1 is not point2:
+
+        point1 = point1.next
+        point2 = point2.next
+
+        if point1 is None and point2 is None:
+            return None
+
+        if point1 is None:
+            point1 = head2
+        if point2 is None:
+            point2 = head1
+    return point1
 
 
 if __name__ == "__main__":
@@ -111,7 +178,7 @@ if __name__ == "__main__":
 
     print("Sample from list")
     num_list = List()
-    num_list.create_list(np.arange(3))
+    num_list.create_list(np.arange(15))
 
     samples = np.zeros(5000)
     for ii in range(5000):
@@ -119,3 +186,47 @@ if __name__ == "__main__":
 
     plt.hist(samples)
     plt.show()
+
+    in_array = [1, 2, 3, 4, 5, 6, 7, 3, 2, 1]
+    llist = List()
+    llist.create_list(in_array)
+    k = 9
+    get_kth_from_end(llist.head, k)
+
+    # try out function to find intersection  #########
+    # the nodes for one of the lists
+    print("++++++++++")
+    one = Node(5)
+    two = Node(5)
+    three = Node("ab")
+    four = Node([1, 2])
+    five = Node(5)
+    six = Node("ab")
+    seven = Node(4)
+
+    # define first list
+    first_head = one
+    one.next = two
+    two.next = three
+    three.next = four
+    four.next = five
+    five.next = six
+    six.next = seven
+
+    # some nodes which are part of second list
+    zero = Node(4)
+    bla = Node(5)
+    blabla = Node([1, 2])
+
+    # define second list
+    second_head = zero
+    zero.next = bla
+    zero.next.next = blabla
+    blabla.next = three
+
+    # find intersection
+    intersect = find_intersection(first_head, second_head)
+    intersect2 = find_inters_two_points(first_head, second_head)
+    print(intersect.data)
+    print(intersect2.data)
+    ##########################
