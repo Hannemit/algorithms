@@ -109,8 +109,37 @@ def calculate_water_volume(heights: List[int]) -> int:
     return total_sum
 
 
+def product_except_self(input_list: list) -> list:
+    """
+    Given a list, return a new list such that each element at index i of the new list is the product of all the numbers
+    in the original list except for the one at i. E.g., if [1, 2, 3] as input, have [6, 3, 2] as output.
+    If the length of the input list is less than 2, the problem is not well defined and we return an empty list
+    :param input_list: list
+    :return: list
+    """
+    end = len(input_list) - 1
+    if end < 1:
+        return []
+
+    left_prod = 1
+    right_prods = input_list.copy()
+
+    for i in range(end - 1, -1, -1):
+        right_prods[i] = right_prods[i] * right_prods[i + 1]
+
+    for i in range(end):
+        current_val = input_list[i]
+        input_list[i] = left_prod * right_prods[i + 1]
+        left_prod *= current_val
+
+    # range is exclusive so need to handle last element
+    input_list[end] = left_prod
+
+    return input_list
+
+
 if __name__ == "__main__":
 
-    input_height = [1, 3, 2, 4, 1, 3, 1, 4, 5, 2, 2, 1, 4, 2, 2]
-    result = calculate_water_volume(input_height)
+    input_height = [2, 3, 4]
+    result = product_except_self(input_height)
     print(result)
