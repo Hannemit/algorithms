@@ -158,6 +158,62 @@ def find_inters_two_points(head1, head2):
     return point1
 
 
+def find_all_combs(message_list):
+    length = len(message_list)
+    if length < 2:
+        return 1
+
+    current_cut = 0
+    current_idx = 0
+    ii = 0
+    for ii in range(length - 1):
+        digit_1 = message_list[ii]
+        digit_2 = message_list[ii + 1]
+
+        # if not a valid digit, split the array into different sections. Store in original array
+        if digit_1 > 2 or digit_1 == 2 and digit_2 > 6:
+            message_list[current_idx] = (
+                ii + 1 - current_cut
+            )  # length of current section
+            current_cut = ii + 1
+            current_idx += 1
+    message_list[current_idx] = ii + 2 - current_cut
+
+    result = 1
+    for val in message_list[: current_idx + 1]:
+        result *= val
+    return result
+
+
+def find_first_missing_pos_int(input_list):
+    size = len(input_list)
+
+    # need a value to replace non-positive or too large value
+    replacement_value = 0
+    for v in input_list:
+        if 0 < v <= size:
+            replacement_value = v
+            break
+    if replacement_value == 0:
+        return 1
+
+    for i in range(size):
+        if input_list[i] < 1 or input_list[i] > size:
+            input_list[i] = replacement_value
+
+    # Computing stage
+    # goal is to make input_list[i] negative if we found value i in input_list
+    for value in input_list:
+        # we need to ensure we don't flip signs by accident
+        value = abs(value) - 1
+        input_list[value] = -abs(input_list[value])
+
+    for i in range(size):
+        if input_list[i] > 0:
+            return i + 1
+    return size + 1
+
+
 if __name__ == "__main__":
 
     list1 = List()
