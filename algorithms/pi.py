@@ -1,7 +1,12 @@
 import numpy as np
 
 
-def approximate_pi(num_samples: int):
+def approximate_pi(num_samples: int) -> float:
+    """
+    Approximate pi using a Monte Carlo method.
+    :param num_samples: int, number of samples to use in MC
+    :return: float, approximation to pi
+    """
 
     in_circle = 0
     for ii in range(num_samples):
