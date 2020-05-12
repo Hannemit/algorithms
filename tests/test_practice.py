@@ -20,8 +20,9 @@ test_data_2 = [
     ([3], 1),
     ([1], 1),
     ([1, 6, 1, 6, 1], 4),
-    ([1, 2, 1, 2, 1, 2], 6),
-    ([1, 2, 1, 2, 1, 2, 7, 1, 2, 1], 18),
+    ([1, 2, 1, 2, 1, 2], 13),
+    ([1, 2, 1, 2, 1, 2, 1, 1], 34),
+    ([1, 2, 1, 2, 1, 2, 7, 1, 2, 1], 13 * 3),
 ]
 
 
@@ -38,6 +39,9 @@ test_data_3 = [
     ([1], 2),
     ([], 1),
 ]
+
+
+test_data_4 = [(4, 5), (3, 3), (1, 1), (0, 1), (5, 8)]
 
 
 @pytest.mark.parametrize("input_arr, k, expected", test_data)
@@ -63,3 +67,16 @@ def test_find_all_combs(input_list, expected):
 def test_find_first_missing_pos_int(input_list, expected):
     out = practice.find_first_missing_pos_int(input_list.copy())
     assert out == expected
+
+
+@pytest.mark.parametrize("input_steps, expected", test_data_4)
+def test_get_unique_steps(input_steps, expected):
+    out = practice.get_unique_steps(input_steps)
+    assert out == expected
+
+
+def test_fib():
+    outputs = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+    for ii in range(11):
+        assert practice.fibonacci_iter(ii) == outputs[ii]
+        assert practice.fibonacci_recursive(ii) == outputs[ii]

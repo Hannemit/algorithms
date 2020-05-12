@@ -1,5 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt
+
+# import matplotlib.pyplot as plt
 from typing import Optional
 
 
@@ -159,30 +160,98 @@ def find_inters_two_points(head1, head2):
 
 
 def find_all_combs(message_list):
+    # TODO: improve this function
     length = len(message_list)
     if length < 2:
         return 1
 
-    current_cut = 0
-    current_idx = 0
+    # find lengths of subarrays with all valid  (e.g. [1, 2, 4, 1, 5, 3] --> [1, 2, 4], [1, 5], [3] --> [2, 2, 1])
+    start = 0
     ii = 0
+    lengths = {}  # store lengths of subarrays in here
+    max_len = 0
     for ii in range(length - 1):
         digit_1 = message_list[ii]
         digit_2 = message_list[ii + 1]
 
-        # if not a valid digit, split the array into different sections. Store in original array
         if digit_1 > 2 or digit_1 == 2 and digit_2 > 6:
-            message_list[current_idx] = (
-                ii + 1 - current_cut
-            )  # length of current section
-            current_cut = ii + 1
-            current_idx += 1
-    message_list[current_idx] = ii + 2 - current_cut
+            sub_length = ii + 1 - start
+            if sub_length > max_len:
+                max_len = sub_length
 
-    result = 1
-    for val in message_list[: current_idx + 1]:
-        result *= val
+            if sub_length not in lengths and sub_length > 1:
+                lengths[sub_length] = 1
+            elif sub_length > 1:
+                lengths[sub_length] += 1
+
+            start = ii + 1
+
+    # add last sublength
+    sub_length = ii + 2 - start
+    if sub_length > max_len:
+        max_len = sub_length
+    if sub_length not in lengths and sub_length > 1:
+        lengths[sub_length] = 1
+    elif sub_length > 1:
+        lengths[sub_length] += 1
+
+    if not lengths:
+        return 1
+
+    vals = [1, 1]
+    answer = 1
+    for ii in range(2, max_len):
+        if ii in lengths:
+            answer *= sum(vals) ** lengths[ii]
+        vals[ii % 2] = sum(vals)
+
+    answer *= sum(vals) ** lengths[max_len]
+    return answer
+
+
+def num_ways(s, memo):
+    if s.startswith("0"):
+        return 0
+    elif len(s) <= 1:
+        return 1
+    if memo[len(s)] is not None:
+        return memo[len(s)]
+    result = num_ways(s[1:], memo)
+    if int(s[:2]) <= 26:
+        result += num_ways(s[2:], memo)
+    memo[len(s)] = result
     return result
+
+
+def get_unique_steps(total_steps: int):
+    """
+
+    :param total_steps:
+    :return:
+    """
+    if total_steps <= 1:
+        return 1
+
+    vals = [1, 1]
+    for ii in range(2, total_steps):
+        vals[ii % 2] = sum(vals)
+    return sum(vals)
+
+
+def fibonacci_recursive(n):
+    if n <= 1:
+        return n
+    return fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2)
+
+
+def fibonacci_iter(n):
+    if n <= 1:
+        return n
+
+    vals = [0, 1]
+    for i in range(2, n):
+        vals[i % 2] = sum(vals)
+    return sum(vals)
 
 
 def find_first_missing_pos_int(input_list):
@@ -216,73 +285,77 @@ def find_first_missing_pos_int(input_list):
 
 if __name__ == "__main__":
 
-    list1 = List()
-    list1.create_list(["s", "t", "a", "c", "k", "a"])
-    list1.print_list()
-
-    list2 = List()
-    list2.create_list(["s", "t", "a", "c", "k"])
-    list2.print_list()
-
-    print(compare_strings(list1.head, list2.head))
-
-    print("Printing reverse list")
-    new_head = reverse_list(list2.head)
-    new_list = List()
-    new_list.head = new_head
-    new_list.print_list()
-
-    print("Sample from list")
-    num_list = List()
-    num_list.create_list(np.arange(15))
-
-    samples = np.zeros(5000)
-    for ii in range(5000):
-        samples[ii] = sample_random_node(num_list.head)
-
-    plt.hist(samples)
-    plt.show()
-
-    in_array = [1, 2, 3, 4, 5, 6, 7, 3, 2, 1]
-    llist = List()
-    llist.create_list(in_array)
-    k = 9
-    get_kth_from_end(llist.head, k)
-
-    # try out function to find intersection  #########
-    # the nodes for one of the lists
-    print("++++++++++")
-    one = Node(5)
-    two = Node(5)
-    three = Node("ab")
-    four = Node([1, 2])
-    five = Node(5)
-    six = Node("ab")
-    seven = Node(4)
-
-    # define first list
-    first_head = one
-    one.next = two
-    two.next = three
-    three.next = four
-    four.next = five
-    five.next = six
-    six.next = seven
-
-    # some nodes which are part of second list
-    zero = Node(4)
-    bla = Node(5)
-    blabla = Node([1, 2])
-
-    # define second list
-    second_head = zero
-    zero.next = bla
-    zero.next.next = blabla
-    blabla.next = three
-
-    # find intersection
-    intersect = find_intersection(first_head, second_head)
-    intersect2 = find_inters_two_points(first_head, second_head)
-    print(intersect.data)
-    print(intersect2.data)
-    ##########################
+    # inputs = [1, 2, 1, 5, 1, 2, 1, 4, 3, 5, 1, 1]
+    inputs = "121512143511"
+    num_ways(inputs, [None] * (len(inputs) + 1))
+    #
+    # list1 = List()
+    # list1.create_list(["s", "t", "a", "c", "k", "a"])
+    # list1.print_list()
+    #
+    # list2 = List()
+    # list2.create_list(["s", "t", "a", "c", "k"])
+    # list2.print_list()
+    #
+    # print(compare_strings(list1.head, list2.head))
+    #
+    # print("Printing reverse list")
+    # new_head = reverse_list(list2.head)
+    # new_list = List()
+    # new_list.head = new_head
+    # new_list.print_list()
+    #
+    # print("Sample from list")
+    # num_list = List()
+    # num_list.create_list(np.arange(15))
+    #
+    # samples = np.zeros(5000)
+    # for ii in range(5000):
+    #     samples[ii] = sample_random_node(num_list.head)
+    #
+    # plt.hist(samples)
+    # plt.show()
+    #
+    # in_array = [1, 2, 3, 4, 5, 6, 7, 3, 2, 1]
+    # llist = List()
+    # llist.create_list(in_array)
+    # k = 9
+    # get_kth_from_end(llist.head, k)
+    #
+    # # try out function to find intersection  #########
+    # # the nodes for one of the lists
+    # print("++++++++++")
+    # one = Node(5)
+    # two = Node(5)
+    # three = Node("ab")
+    # four = Node([1, 2])
+    # five = Node(5)
+    # six = Node("ab")
+    # seven = Node(4)
+    #
+    # # define first list
+    # first_head = one
+    # one.next = two
+    # two.next = three
+    # three.next = four
+    # four.next = five
+    # five.next = six
+    # six.next = seven
+    #
+    # # some nodes which are part of second list
+    # zero = Node(4)
+    # bla = Node(5)
+    # blabla = Node([1, 2])
+    #
+    # # define second list
+    # second_head = zero
+    # zero.next = bla
+    # zero.next.next = blabla
+    # blabla.next = three
+    #
+    # # find intersection
+    # intersect = find_intersection(first_head, second_head)
+    # intersect2 = find_inters_two_points(first_head, second_head)
+    # print(intersect.data)
+    # print(intersect2.data)
+    # ##########################
