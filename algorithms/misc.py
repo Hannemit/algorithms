@@ -138,6 +138,19 @@ def product_except_self(input_list: list) -> list:
     return input_list
 
 
+def fast_power(a: int, b: int) -> int:
+    # calculate a^b, with a and b positive integers
+    if b == 1:
+        return a
+    else:
+        c = a * a
+        ans = fast_power(c, b // 2)
+    if b % 2 == 1:
+        return a * ans
+    else:
+        return ans
+
+
 if __name__ == "__main__":
 
     input_height = [2, 3, 4]
