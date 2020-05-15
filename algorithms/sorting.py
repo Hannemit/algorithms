@@ -77,6 +77,23 @@ def partition_using_pivot(input_list: list, pivot: Union[float, int]):
     return less_than, greater_than
 
 
+def partition_inplace(input_list: list, pivot_idx: int):
+    # partition in place, using constant space.
+    if len(input_list) < 2:
+        return input_list
+
+    if pivot_idx != 0:
+        swap_values(input_list, pivot_idx, 0)
+
+    pivot = input_list[0]
+    ii = 1
+    for k in range(1, len(input_list)):
+        if input_list[k] < pivot:
+            swap_values(input_list, k, ii)
+            ii += 1
+    swap_values(input_list, 0, ii - 1)
+
+
 def quick_sort(in_list: list, method: str = "random"):
 
     if len(in_list) < 2:

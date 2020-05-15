@@ -14,6 +14,15 @@ test_data = [
     ([-1, -2, -1, -2, -4, 5, 3, 9, -4, 2], [-4, -4, -2, -2, -1, -1, 2, 3, 5, 9]),
 ]
 
+test_data_2 = [
+    ([1, 5, 3, 7, 5, 6, 3, 8, 9], 3, [3, 5, 3, 1, 5, 6, 7, 8, 9]),
+    ([], 0, []),
+    ([8, 9], 1, [8, 9]),
+    ([8, 9], 0, [8, 9]),
+    ([8, 9, 1, 3], 0, [3, 1, 8, 9]),
+    ([8, 9, 1, 3], 2, [1, 9, 8, 3]),
+]
+
 
 @pytest.mark.parametrize("test_input,expected", test_data)
 def test_selection_sort(test_input, expected):
@@ -59,3 +68,10 @@ def test_heapsort(test_input, expected):
     copy_in = test_input.copy()
     out = sorting.Heap().heap_sort(copy_in)
     np.testing.assert_allclose(expected, out)
+
+
+@pytest.mark.parametrize("input_list, pivot_idx, expected", test_data_2)
+def test_partition_inplace(input_list, pivot_idx, expected):
+    copy_in = input_list.copy()
+    sorting.partition_inplace(copy_in, pivot_idx)
+    assert copy_in == expected
