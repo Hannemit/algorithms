@@ -67,6 +67,9 @@ def test_quicksort(test_input, expected):
 
 @pytest.mark.parametrize("test_input, expected", test_data_3)
 def test_calculate_water_volume(test_input, expected):
+    out = misc.max_water_constant_space(test_input.copy())
+    np.testing.assert_equal(out, expected)
+
     out = misc.calculate_water_volume(test_input.copy())
     np.testing.assert_equal(out, expected)
 

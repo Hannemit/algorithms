@@ -98,7 +98,7 @@ def calculate_water_volume(heights: List[int]) -> int:
 
     # fill in max values from left to right
     for i in range(1, total_num):
-        max_val_list[i] = max(heights[i], max_val_list[i - 1])
+        max_val_list[i] = max(max_val_list[i], max_val_list[i - 1])
 
     # and from right to left, picking min of the maxes
     max_val_list[-1] = heights[-1]
@@ -107,6 +107,52 @@ def calculate_water_volume(heights: List[int]) -> int:
         max_val_list[i] = min(max_val_list[i], max(heights[i], max_val_list[i + 1]))
         total_sum += max_val_list[i] - heights[i]
     return total_sum
+
+
+def max_water_constant_space(heights: list):
+    size = len(heights)
+    if size == 0:
+        return 0
+
+    # initialize
+    prev_max = heights[0]
+    prev_index = 0
+    total_water = 0
+
+    # use temp to store the water until a larger wall is found. Since if no larger wall is ever
+    # found we may have added too much water, we can then subtract temp from total_water
+    temp = 0
+
+    for i in range(1, len(heights)):
+        # keep track of left highest wall
+        if heights[i] >= prev_max:
+            prev_max = heights[i]
+            prev_index = i
+
+            # reset temp, we found a larger wall so the water stored is legit.
+            temp = 0
+        else:
+            total_water += prev_max - heights[i]
+
+            # Store in temp too, can subtract if no higher wall is found later
+            temp += prev_max - heights[i]
+
+    # If hadn't found larger wall, then too much water added. Subtract that and go through array
+    # from other side to add the correct amount of water
+    if prev_index < size - 1:
+        # subtract the water we added too much
+        total_water -= temp
+
+        # start from end of array, initialize max as last value
+        prev_max = heights[size - 1]
+
+        # go from end to the actual max (stored in prev_index)
+        for ii in range(size - 1, prev_index - 1, -1):
+            if heights[ii] >= prev_max:
+                prev_max = heights[ii]
+            else:
+                total_water += prev_max - heights[ii]
+    return total_water
 
 
 def product_except_self(input_list: list) -> list:
@@ -153,6 +199,6 @@ def fast_power(a: int, b: int) -> int:
 
 if __name__ == "__main__":
 
-    input_height = [2, 3, 4]
-    result = product_except_self(input_height)
+    input_height = [1, 3, 2, 4, 1, 3, 1, 4, 5, 2, 2, 1, 4, 2, 2]
+    result = max_water_constant_space(input_height, 15)
     print(result)
