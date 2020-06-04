@@ -34,6 +34,14 @@ def find_best_path(mat: List[List[int]]) -> int:
 def find_shortest_maze_path(
     mat: List[List[bool]], start: List[int], end: List[int]
 ) -> Union[None, int]:
+    """
+    Find shortest path from start to end, given boolean matrix. The True values are walls, the False values are paths
+    on which we can walk. We cannot walk through walls or out of bounds of the input matrix.
+    :param mat: list of lists, boolean matrix. Walls are True, valid paths are False
+    :param start: list of length 2, [start_x, start_y]. Starting coordinates
+    :param end: list of length 2, [end_x, end_y]. End coordinates
+    :return: int or None, the minimum number of steps from start to end, or None of no valid path possible.
+    """
     # check if start or ending position is a wall
     if mat[start[0]][start[1]] is True or mat[start[0]][start[1]] is True:
         return None
@@ -43,11 +51,11 @@ def find_shortest_maze_path(
     num_rows = len(mat)
     num_cols = len(mat[0])
 
-    current = [start[0], start[1]]
-    mat[current[0]][current[1]] = 0
+    # set start to 0 steps
+    mat[start[0]][start[1]] = 0
 
     que = queue.Queue()
-    que.put(current)
+    que.put(start)
 
     while not que.empty():
 
@@ -73,10 +81,8 @@ def find_shortest_maze_path(
             if mat[move[0]][move[1]] is True or mat[move[0]][move[1]] is not False:
                 continue
 
-            # update current state, add one to where we came from
             mat[move[0]][move[1]] = mat[current[0]][current[1]] + 1
 
-            # add to queue to later look at its neighbours
             que.put(move)
 
     # return value at end, or None if end is still unseen (could not reach it from anywhere)
